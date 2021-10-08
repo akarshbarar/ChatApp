@@ -1,3 +1,4 @@
+import 'package:chatapp/View/call.dart';
 import 'package:chatapp/View/chat.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -10,6 +11,28 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  int selectdIndex = 0;
+
+  var bnb = <Widget>[
+    ListView.builder(
+        itemCount: 100,
+        itemBuilder: (context, i) {
+          return ListTile(
+            leading: CircleAvatar(
+              child: FlutterLogo(),
+            ),
+            title: Text("user $i"),
+            subtitle: Text("message $i"),
+            onTap: () {
+              Get.to(Chat());
+            },
+          );
+        }),
+    Call(),
+    Center(
+      child: Text("Profile"),
+    )
+  ];
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -20,21 +43,14 @@ class _HomeState extends State<Home> {
         elevation: 0,
         automaticallyImplyLeading: false,
       ),
-      body: ListView.builder(
-          itemCount: 100,
-          itemBuilder: (context, i) {
-            return ListTile(
-              leading: CircleAvatar(
-                child: FlutterLogo(),
-              ),
-              title: Text("user $i"),
-              subtitle: Text("message $i"),
-              onTap: () {
-                Get.to(Chat());
-              },
-            );
-          }),
+      body: bnb[selectdIndex],
       bottomNavigationBar: BottomNavigationBar(
+        currentIndex: selectdIndex,
+        onTap: (i) {
+          setState(() {
+            selectdIndex = i;
+          });
+        },
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.chat), label: "Chat"),
           BottomNavigationBarItem(icon: Icon(Icons.call), label: "Call"),
