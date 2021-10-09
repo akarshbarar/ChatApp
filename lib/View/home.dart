@@ -1,5 +1,6 @@
 import 'package:chatapp/View/call.dart';
 import 'package:chatapp/View/chat.dart';
+import 'package:chatapp/View/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -29,9 +30,7 @@ class _HomeState extends State<Home> {
           );
         }),
     Call(),
-    Center(
-      child: Text("Profile"),
-    )
+    Profile()
   ];
   @override
   Widget build(BuildContext context) {
