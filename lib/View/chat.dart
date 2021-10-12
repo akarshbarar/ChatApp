@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:socket_io_client/socket_io_client.dart';
 
 class Chat extends StatefulWidget {
   const Chat({Key? key}) : super(key: key);
@@ -8,6 +9,28 @@ class Chat extends StatefulWidget {
 }
 
 class _ChatState extends State<Chat> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    connectToServer();
+  }
+
+  void connectToServer() {
+    try {
+      print("Inside connect to server");
+      Socket socket = io(
+          'http://192.168.29.14:3000',
+          OptionBuilder().setTransports(['websocket']) // for Flutter or Dart VM
+              .build());
+      socket.connect();
+
+      socket.on('connect', (data) => {print('Connected: $socket.id')});
+    } catch (error) {
+      print(error.toString());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
