@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:socket_io_client/socket_io_client.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class Chat extends StatefulWidget {
   const Chat({Key? key}) : super(key: key);
@@ -9,26 +9,21 @@ class Chat extends StatefulWidget {
 }
 
 class _ChatState extends State<Chat> {
+  late IO.Socket socket;
   @override
   void initState() {
     // TODO: implement initState
+    socket = IO.io(
+        "http://192.168.29.14:3000",
+        IO.OptionBuilder()
+            .setTransports(["websocket"])
+            .disableAutoConnect()
+            .build());
+    socket.connect();
+
+    socket.on('event', (data) => print(data));
+    print(socket.connected);
     super.initState();
-    connectToServer();
-  }
-
-  void connectToServer() {
-    try {
-      print("Inside connect to server");
-      Socket socket = io(
-          'http://192.168.29.14:3000',
-          OptionBuilder().setTransports(['websocket']) // for Flutter or Dart VM
-              .build());
-      socket.connect();
-
-      socket.on('connect', (data) => {print('Connected: $socket.id')});
-    } catch (error) {
-      print(error.toString());
-    }
   }
 
   @override
