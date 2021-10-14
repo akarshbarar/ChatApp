@@ -13,17 +13,23 @@ class _ChatState extends State<Chat> {
   @override
   void initState() {
     // TODO: implement initState
-    socket = IO.io(
-        "http://192.168.29.14:3000",
-        IO.OptionBuilder()
-            .setTransports(["websocket"])
-            .disableAutoConnect()
-            .build());
-    socket.connect();
-
-    socket.on('event', (data) => print(data));
-    print(socket.connected);
     super.initState();
+    // Added a function for connection
+    connect();
+  }
+
+  void connect() {
+    //Called the IP
+    socket = IO.io("http://192.168.29.14:3000", <String, dynamic>{
+      "transports": ["websocket"],
+      "autoConnect": false,
+    });
+    socket.connect();
+    socket.onConnect((data) {
+      print("Connected");
+    });
+    //Check the status
+    print(socket.connected);
   }
 
   @override
